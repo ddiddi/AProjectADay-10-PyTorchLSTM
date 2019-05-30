@@ -38,3 +38,8 @@ def train(model, loss, optimizer, x_val, y_val):
     optimizer.step()
 
     return output.item()
+
+def predict(model, x_val):
+    x = Variable(x_val, requires_grad=False)
+    output = model.forward(x)
+    return output.data.numpy().argmax(axis=1)
