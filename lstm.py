@@ -19,3 +19,22 @@ class LSTMNet(torch.nn.Module):
         c0 = Variable(torch.zeros([1, batch_size, self.hidden_dim]), requires_grad=False)
         fx, _ = self.lstm.forward(x, (h0, c0))
         return self.linear.forward(fx[-1])
+
+def train(model, loss, optimizer, x_val, y_val):
+    x = Variable(x_val, requires_grad=False)
+    y = Variable(y_val, requires_grad=False)
+
+    # Reset gradient
+    optimizer.zero_grad()
+
+    # Forward
+    fx = model.forward(x)
+    output = loss.forward(fx, y)
+
+    # Backward
+    output.backward()
+
+    # Update parameters
+    optimizer.step()
+
+    return output.item()
